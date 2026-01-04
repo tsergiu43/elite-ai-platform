@@ -79,3 +79,4 @@ STRIPE_SECRET_KEY = 'sk_test_51Slsy7EpLKo4A4Mpl3w0EJWKKoiL7A64bCbJHsen5MScpDw0tJ
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGOUT_METHODS = ['POST', 'GET']
+ALLOWED_HOSTS = ['elite-ai-platform.onrender.com', '127.0.0.1', 'localhost']
