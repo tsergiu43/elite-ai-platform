@@ -12,11 +12,11 @@
         .sidebar { width: var(--sidebar-w); height: 100vh; background: #000; border-right: 1px solid var(--border); position: fixed; padding: 24px; display: flex; flex-direction: column; }
         .brand { font-weight: 800; font-size: 1.5rem; color: #fff; text-decoration: none; margin-bottom: 40px; }
         .brand span { color: var(--gold); }
-        .nav-item { color: #808191; text-decoration: none; padding: 12px 16px; margin-bottom: 8px; border-radius: 12px; display: flex; align-items: center; font-weight: 600; }
-        .nav-item.active { background: var(--card); color: #fff; }
+        .nav-item { color: #808191; text-decoration: none; padding: 12px 16px; margin-bottom: 8px; border-radius: 12px; display: flex; align-items: center; font-weight: 600; border: none; width: 100%; }
+        .nav-item:hover, .nav-item.active { background: var(--card); color: #fff; }
         .nav-item i { margin-right: 12px; }
-        .main-content { margin-left: var(--sidebar-w); flex: 1; padding: 60px; }
-        .strategy-card { background: var(--card); border: 1px solid var(--border); padding: 30px; border-radius: 20px; margin-bottom: 20px; }
+        .main-content { margin-left: var(--sidebar-w); flex: 1; padding: 60px; max-width: 900px; }
+        .strategy-card { background: var(--card); border-left: 4px solid var(--gold); padding: 30px; border-radius: 12px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -27,13 +27,21 @@
             <a href="{% url 'archive' %}" class="nav-item"><i class="bi bi-calendar-check"></i> Results</a>
             <a href="{% url 'why_us' %}" class="nav-item active"><i class="bi bi-info-circle"></i> Strategy</a>
             <a href="{% url 'legal' %}" class="nav-item"><i class="bi bi-shield-check"></i> Legal Info</a>
+            <hr style="border-color: var(--border); margin: 20px 0;">
+            {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post">{% csrf_token %}
+                    <button type="submit" class="nav-item bg-transparent text-start text-danger"><i class="bi bi-box-arrow-right"></i> Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-item"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+            {% endif %}
         </nav>
     </div>
     <div class="main-content">
-        <h2 class="fw-bold mb-4">Our AI Strategy</h2>
+        <h2 class="fw-bold mb-4">Our Strategy</h2>
         <div class="strategy-card">
-            <h4 style="color:var(--gold)">Neural Network Analysis</h4>
-            <p class="opacity-75">We use advanced machine learning models to analyze player performance, weather conditions, and historical data to provide the highest confidence signals.</p>
+            <h4 style="color:var(--gold)">AI Neural Networks</h4>
+            <p class="opacity-75">We use high-end machine learning to predict match outcomes with 85%+ accuracy.</p>
         </div>
     </div>
 </body>

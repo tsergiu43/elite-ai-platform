@@ -13,7 +13,7 @@
         .sidebar { width: var(--sidebar-w); height: 100vh; background: #000; border-right: 1px solid var(--border); position: fixed; padding: 24px; display: flex; flex-direction: column; z-index: 100; }
         .brand { font-weight: 800; font-size: 1.5rem; color: #fff; text-decoration: none; margin-bottom: 40px; }
         .brand span { color: var(--gold); }
-        .nav-item { color: #808191; text-decoration: none; padding: 12px 16px; margin-bottom: 8px; border-radius: 12px; display: flex; align-items: center; font-weight: 600; transition: 0.2s; }
+        .nav-item { color: #808191; text-decoration: none; padding: 12px 16px; margin-bottom: 8px; border-radius: 12px; display: flex; align-items: center; font-weight: 600; transition: 0.2s; border: none; width: 100%; }
         .nav-item:hover, .nav-item.active { background: var(--card); color: #fff; }
         .nav-item i { margin-right: 12px; }
         .nav-item.active i { color: var(--gold); }
@@ -30,6 +30,16 @@
             <a href="{% url 'archive' %}" class="nav-item"><i class="bi bi-calendar-check"></i> Results</a>
             <a href="{% url 'why_us' %}" class="nav-item"><i class="bi bi-info-circle"></i> Strategy</a>
             <a href="{% url 'legal' %}" class="nav-item"><i class="bi bi-shield-check"></i> Legal Info</a>
+            <hr style="border-color: var(--border); margin: 20px 0;">
+            {% if user.is_authenticated %}
+                <div class="small opacity-50 mb-2 px-3">USER: {{ user.username }}</div>
+                <form action="{% url 'logout' %}" method="post">{% csrf_token %}
+                    <button type="submit" class="nav-item bg-transparent text-start text-danger"><i class="bi bi-box-arrow-right"></i> Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="nav-item"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                <a href="{% url 'register' %}" class="nav-item"><i class="bi bi-person-plus"></i> Register</a>
+            {% endif %}
         </nav>
     </div>
     <div class="main-content">
@@ -40,16 +50,15 @@
                 <div class="match-card">
                     <div class="text-center mb-3"><strong>{{ match.home_team }} vs {{ match.away_team }}</strong></div>
                     <div class="prediction-box">
-                        <small class="opacity-50">AI PICK</small>
-                        <h5 class="fw-bold my-2">{{ match.predicted_winner }}</h5>
-                        <div class="mt-2">
-                            <span class="fw-bold text-success">{{ match.confidence_score|stringformat:".2f"|slice:"2:" }}% Confidence</span>
+                        <h5 class="fw-bold my-2 text-white">{{ match.predicted_winner }}</h5>
+                        <div class="mt-2 text-success fw-bold">
+                            {{ match.confidence_score|stringformat:".2f"|slice:"2:" }}% Confidence
                         </div>
                     </div>
                 </div>
             </div>
             {% empty %}
-            <div class="col-12 text-center opacity-50">No active signals at the moment.</div>
+            <p class="opacity-50 text-center mt-5">No signals active.</p>
             {% endfor %}
         </div>
     </div>
