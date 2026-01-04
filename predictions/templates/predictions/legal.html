@@ -14,28 +14,26 @@
         .brand span { color: var(--gold); }
         .nav-item { color: #808191; text-decoration: none; padding: 12px 16px; margin-bottom: 8px; border-radius: 12px; display: flex; align-items: center; font-weight: 600; }
         .nav-item.active { background: var(--card); color: #fff; }
-        .main-content { margin-left: var(--sidebar-w); flex: 1; padding: 60px; max-width: 900px; }
-        .legal-card { background: var(--card); border: 1px solid var(--border); padding: 40px; border-radius: 24px; margin-bottom: 20px; }
-        h4 { color: var(--gold); font-weight: 800; margin-bottom: 15px; }
-        p { color: #808191; line-height: 1.7; }
+        .nav-item i { margin-right: 12px; }
+        .main-content { margin-left: var(--sidebar-w); flex: 1; padding: 60px; }
+        .legal-box { background: var(--card); border-left: 4px solid var(--gold); padding: 20px; border-radius: 8px; }
     </style>
 </head>
 <body>
-<div class="sidebar">
-    <a href="{% url 'landing' %}" class="brand">ELITE<span>AI</span></a>
-    <nav>
-        <a href="{% url 'dashboard' %}" class="nav-item"><i class="bi bi-grid-fill"></i> Dashboard</a>
-        <a href="{% url 'archive' %}" class="nav-item"><i class="bi bi-calendar-check"></i> Results</a>
-        <a href="{% url 'why_us' %}" class="nav-item"><i class="bi bi-info-circle"></i> Strategy</a>
-        <a href="{% url 'legal' %}" class="nav-item active"><i class="bi bi-shield-check"></i> Legal Info</a>
-    </nav>
-</div>
-<div class="main-content">
-    <h2 class="fw-bold mb-5">Legal & Compliance</h2>
-    <div class="legal-card">
-        <h4>Disclaimer</h4>
-        <p>VIP ELITE AI oferă predicții statistice. Pariurile implică risc. Nu pariați bani pe care nu vă permiteți să îi pierdeți.</p>
+    <div class="sidebar">
+        <a href="{% url 'landing' %}" class="brand">ELITE<span>AI</span></a>
+        <nav>
+            <a href="{% url 'dashboard' %}" class="nav-item"><i class="bi bi-grid-fill"></i> Dashboard</a>
+            <a href="{% url 'archive' %}" class="nav-item"><i class="bi bi-calendar-check"></i> Results</a>
+            <a href="{% url 'why_us' %}" class="nav-item"><i class="bi bi-info-circle"></i> Strategy</a>
+            <a href="{% url 'legal' %}" class="nav-item active"><i class="bi bi-shield-check"></i> Legal Info</a>
+        </nav>
     </div>
-</div>
+    <div class="main-content">
+        <h2 class="fw-bold mb-4">Legal Disclaimer</h2>
+        <div class="legal-box">
+            <p>Our platform provides statistical predictions based on AI algorithms. Gambling involves risk. We do not guarantee profits. Must be 18+ to use our insights.</p>
+        </div>
+    </div>
 </body>
 </html>
