@@ -5,28 +5,27 @@
     <title>Login | ELITE AI</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background: #0a0a0b; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .login-card { background: #141416; padding: 40px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); width: 100%; max-width: 400px; }
-        .btn-gold { background: #e2b719; color: #000; font-weight: 800; border-radius: 12px; border: none; padding: 12px; width: 100%; }
-        .form-control { background: #000; border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 12px; padding: 12px; }
+        body { background: #0a0a0b; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0; }
+        .login-card { background: #141416; padding: 40px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); width: 100%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .brand { font-weight: 800; font-size: 1.8rem; text-align: center; display: block; margin-bottom: 30px; color: #fff; text-decoration: none; }
+        .brand span { color: #e2b719; }
+        .btn-gold { background: #e2b719; color: #000; font-weight: 800; border-radius: 12px; border: none; padding: 14px; width: 100%; transition: 0.3s; }
+        .btn-gold:hover { background: #ffeb99; transform: translateY(-2px); }
+        .form-control { background: #000; border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 12px; padding: 12px; margin-bottom: 20px; }
         .form-control:focus { background: #000; border-color: #e2b719; color: #fff; box-shadow: none; }
     </style>
 </head>
 <body>
     <div class="login-card">
-        <h3 class="fw-bold text-center mb-4">Welcome Back</h3>
+        <a href="/" class="brand">ELITE<span>AI</span></a>
         <form method="post">
             {% csrf_token %}
-            <div class="mb-3">
-                <input type="text" name="username" class="form-control" placeholder="Username" required>
-            </div>
-            <div class="mb-4">
-                <input type="password" name="password" class="form-control" placeholder="Password" required>
-            </div>
-            <button type="submit" class="btn-gold">LOGIN</button>
+            <input type="text" name="username" class="form-control" placeholder="Utilizator" required>
+            <input type="password" name="password" class="form-control" placeholder="Parolă" required>
+            <button type="submit" class="btn-gold">ACCESEAZĂ DASHBOARD</button>
         </form>
-        <div class="text-center mt-3">
-            <a href="{% url 'register' %}" class="text-decoration-none" style="color:#808191">Don't have an account? Register</a>
+        <div class="text-center mt-4">
+            <a href="{% url 'register' %}" class="text-decoration-none small" style="color:#808191">Nu ai cont? Înregistrare</a>
         </div>
     </div>
 </body>

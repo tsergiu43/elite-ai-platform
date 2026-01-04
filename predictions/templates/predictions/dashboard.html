@@ -13,13 +13,15 @@
         .sidebar { width: var(--sidebar-w); height: 100vh; background: #000; border-right: 1px solid var(--border); position: fixed; padding: 24px; display: flex; flex-direction: column; z-index: 100; }
         .brand { font-weight: 800; font-size: 1.5rem; color: #fff; text-decoration: none; margin-bottom: 40px; }
         .brand span { color: var(--gold); }
-        .nav-item { color: #808191; text-decoration: none; padding: 12px 16px; margin-bottom: 8px; border-radius: 12px; display: flex; align-items: center; font-weight: 600; transition: 0.2s; border: none; width: 100%; }
+        .nav-item { color: #808191; text-decoration: none; padding: 12px 16px; margin-bottom: 8px; border-radius: 12px; display: flex; align-items: center; font-weight: 600; border: none; width: 100%; text-align: left; }
         .nav-item:hover, .nav-item.active { background: var(--card); color: #fff; }
         .nav-item i { margin-right: 12px; }
         .nav-item.active i { color: var(--gold); }
         .main-content { margin-left: var(--sidebar-w); flex: 1; padding: 40px; }
-        .match-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 24px; }
-        .prediction-box { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px; border: 1px solid rgba(255,255,255,0.03); text-align: center; }
+        .match-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 24px; margin-bottom: 20px; transition: 0.3s; }
+        .match-card:hover { border-color: var(--gold); transform: translateY(-5px); }
+        .prediction-box { background: rgba(226, 183, 25, 0.05); border-radius: 16px; padding: 20px; border: 1px solid rgba(226, 183, 25, 0.1); text-align: center; }
+        .team-name { font-size: 0.9rem; font-weight: 600; opacity: 0.9; }
     </style>
 </head>
 <body>
@@ -32,33 +34,43 @@
             <a href="{% url 'legal' %}" class="nav-item"><i class="bi bi-shield-check"></i> Legal Info</a>
             <hr style="border-color: var(--border); margin: 20px 0;">
             {% if user.is_authenticated %}
-                <div class="small opacity-50 mb-2 px-3">USER: {{ user.username }}</div>
+                <div class="small opacity-50 mb-2 px-3">VIP: {{ user.username }}</div>
                 <form action="{% url 'logout' %}" method="post">{% csrf_token %}
-                    <button type="submit" class="nav-item bg-transparent text-start text-danger"><i class="bi bi-box-arrow-right"></i> Logout</button>
+                    <button type="submit" class="nav-item bg-transparent text-danger"><i class="bi bi-box-arrow-right"></i> Logout</button>
                 </form>
             {% else %}
                 <a href="{% url 'login' %}" class="nav-item"><i class="bi bi-box-arrow-in-right"></i> Login</a>
-                <a href="{% url 'register' %}" class="nav-item"><i class="bi bi-person-plus"></i> Register</a>
             {% endif %}
         </nav>
     </div>
     <div class="main-content">
-        <h4 class="fw-bold mb-4">Live AI Signals</h4>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold m-0">Live AI Predictions</h4>
+            <span class="badge bg-success">Updates every 24h</span>
+        </div>
         <div class="row g-4">
             {% for match in matches %}
             <div class="col-md-6 col-xl-4">
                 <div class="match-card">
-                    <div class="text-center mb-3"><strong>{{ match.home_team }} vs {{ match.away_team }}</strong></div>
+                    <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+                        <span class="team-name text-center w-45">{{ match.home_team }}</span>
+                        <span class="opacity-25">vs</span>
+                        <span class="team-name text-center w-45">{{ match.away_team }}</span>
+                    </div>
                     <div class="prediction-box">
-                        <h5 class="fw-bold my-2 text-white">{{ match.predicted_winner }}</h5>
-                        <div class="mt-2 text-success fw-bold">
-                            {{ match.confidence_score|stringformat:".2f"|slice:"2:" }}% Confidence
+                        <small class="text-uppercase opacity-50 fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">AI Forecast</small>
+                        <h5 class="fw-bold my-2" style="color: var(--gold);">{{ match.predicted_winner }}</h5>
+                        <div class="mt-2 text-success" style="font-size: 0.85rem;">
+                            <i class="bi bi-shield-check"></i> {{ match.confidence_score|stringformat:".2f"|slice:"2:" }}% Confidence
                         </div>
                     </div>
                 </div>
             </div>
             {% empty %}
-            <p class="opacity-50 text-center mt-5">No signals active.</p>
+            <div class="text-center opacity-50 py-5">
+                <i class="bi bi-search fs-1 mb-3 d-block"></i>
+                No active matches found.
+            </div>
             {% endfor %}
         </div>
     </div>
