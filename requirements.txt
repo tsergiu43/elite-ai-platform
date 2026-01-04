@@ -1,0 +1,4 @@
+django
+stripe
+gunicorn
+django-mathfilters
