@@ -1,50 +1,53 @@
 import os
 import requests
 import django
+from datetime import datetime
 
-# Setează mediul Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
 from predictions.models import Match
-from django.utils import timezone
 
-def fetch_live_matches():
+def fetch_data():
+    api_key = os.getenv('FOOTBALL_API_KEY')
     url = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
     
-    # Parametri: luăm meciurile de azi din Premier League (ID: 39)
-    # Poți schimba ID-ul pentru alte ligi
-    querystring = {"live": "all", "league": "39"} 
+    # Setăm data de azi: 2026-01-04
+    today = "2026-01-04" 
+    
+    # Parametri pentru Premier League (39) și sezonul curent (2025)
+    querystring = {"date": today, "league": "39", "season": "2025"} 
 
     headers = {
-        "X-RapidAPI-Key": os.getenv('FOOTBALL_API_KEY'),
+        "X-RapidAPI-Key": api_key,
         "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com"
     }
 
-    response = requests.get(url, headers=headers, params=querystring)
-    data = response.json()
+    print(f"Checking matches for {today}...")
+    try:
+        response = requests.get(url, headers=headers, params=querystring)
+        res_data = response.json()
 
-    if "response" in data:
-        for item in data["response"]:
-            home = item["teams"]["home"]["name"]
-            away = item["teams"]["away"]["name"]
+        if "response" in res_data and len(res_data["response"]) > 0:
+            # Opțional: Ștergem meciurile vechi înainte de import
+            Match.objects.all().delete()
             
-            # Exemplu simplu de "AI": dacă echipa gazdă are cota mai bună sau e mai bine clasată
-            # Aici poți pune logica ta reală de predicție
-            prediction = f"Win {home}" 
-            
-            # Salvăm în baza de date
-            Match.objects.update_or_create(
-                home_team=home,
-                away_team=away,
-                defaults={
-                    'predicted_winner': prediction,
-                    'confidence_score': 0.85, # Aici poți calcula un scor real
-                    'match_date': timezone.now(),
-                    'sport': 'Football'
-                }
-            )
-        print(f"Importate {len(data['response'])} meciuri!")
+            for item in res_data["response"]:
+                home = item["teams"]["home"]["name"]
+                away = item["teams"]["away"]["name"]
+                Match.objects.create(
+                    home_team=home,
+                    away_team=away,
+                    predicted_winner=f"Win {home}",
+                    confidence_score=0.85,
+                    match_date=datetime.now(),
+                    sport='Football'
+                )
+            print("Import realizat cu succes!")
+        else:
+            print("Nu s-au găsit meciuri pentru această dată.")
+    except Exception as e:
+        print(f"Eroare la API: {e}")
 
 if __name__ == "__main__":
-    fetch_live_matches()
+    fetch_data()
